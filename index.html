@@ -1,0 +1,333 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="icon" href="data:">
+<title>らくライン</title>
+</head><body>
+<h1><img src="./rakuline-white.svg" title="らくライン"></h1>
+
+<div class=center>
+  <input type=datetime-local id=indatetime><br>
+  <button id=btnnow>現在時刻を反映</button><br>
+
+  <div class=station>
+    <span>出発</span>
+    <select id=selfrom></select>
+  </div><br>
+  <img id="imgarrows" src="./arrows.png"><br>
+  <div class=station>
+    <span>到着</span>
+    <select id=selto><select>
+  </div><br>
+</div>
+
+<div class=boxes id=box1>
+<!--
+<div class=box>
+  <div class=box1><span>出発まで</span><span>22分</span></div>
+  <div class=box2>
+    <div class=box2a>
+      <span class=spantime>14:02</span><span class=spanarrow>→</span><span class=spantime>15:35</span><span class=spanduring>(33分)</span></div>
+    </div>
+    <div class=box2b>
+      <span class=spanfee>250円</span>
+    </div>
+    <div class=box2c>鯖江駅→福井駅</div>
+  </div>
+</div>
+-->
+</div>
+
+</div>
+
+<footer>
+関連アプリ: <a href=https://code4fukui.github.io/hapiline-timetable/>ハピライン 発車カウントダウン</a>、<a href=https://code4fukui.github.io/hapiline-timetable/map.html>ハピライン 駅マップ</a><br>
+出典: <a href=https://www.hapi-line.co.jp/timetable/>時刻表・運賃｜株式会社ハピラインふくい</a> / <a href=https://www.hapi-line.co.jp/route/station/>路線・駅情報｜株式会社ハピラインふくい</a><br>
+DATA: → 一部をデータを打ち込み(<a href=https://github.com/code4fukui/hapiline-timetable/blob/main/hapiline-kudari.csv>上り</a>/<a href=https://github.com/code4fukui/hapiline-timetable/blob/main/hapiline-kudari.csv>下り</a>) → <a href=https://github.com/code4fukui/hapiline-timetable/blob/main/make.js>make.js</a> → <a href=https://github.com/code4fukui/hapiline-timetable/blob/main/hapiline-timetable.csv>CSVファイル</a><br>
+DATA: → <a href=https://github.com/code4fukui/hapiline-timetable/blob/main/hapiline-fare.csv>運賃CSV</a> / <a href=https://github.com/code4fukui/hapiline-timetable/blob/main/hapiline-station.csv>駅CSV</a><br>
+APP: <a href=https://github.com/code4fukui/hapiline-timetable/>MIT License by Code for FUKUI</a><br>
+forked APP: <a href=https://code4fukui.github.io/fukutetsu-opendata/>発車カウントダウン - 福井鉄道</a><br>
+</footer>
+
+<style>
+/* header */
+body {
+  font-family: sans-serif;
+  margin: 0;
+}
+h1 {
+  background-color: #fe5e99;
+  color: white;
+  margin: 0;
+  padding: .5em 0 0em 0;
+  text-align: center;
+}
+h1 img {
+  height: 2em;
+}
+.center {
+  text-align: center;
+}
+
+/* datetime */
+input[type=datetime-local] {
+  background-color: #efefef;
+  padding: 1em 2em;
+  margin: 1em 0 .1em 0;
+  border-radius: 2em;
+  font-size: 18px;
+  width: 16em;
+  border: none;
+}
+#btnnow {
+  border: none;
+  background-color: white;
+  padding-left: 16em;
+  margin-bottom: 2em;
+}
+#spannow {
+  display: inline-block;
+  padding: .5em 1.5em;
+  margin: 0;
+  font-size: 140%;
+}
+
+/* stations */
+.station {
+  background-color: #fdeaec;
+  display: inline-block;
+  font-size: 18px;
+  width: 20em;
+  height: 3em;
+  white-space: nowrap;
+  border-radius: 1.5em;
+  position: relative;
+}
+.station > span {
+  position: absolute;
+  left: 0;
+  display: inline-block;
+  background-color: #fe5e99;
+  color: white;
+  font-weight: bold;
+  height: 3em;
+  line-height: 3em;
+  padding: 0 1em;
+  margin: 0;
+  border-radius: 1.5em 0 0 1.5em;
+}
+.station > select {
+  margin-left: 3em;
+  background-color: #fdeaec;
+  font-weight: bold;
+  font-size: 120%;
+  margin: .5em;
+  padding: .2em;
+}
+#imgarrows {
+  height: 2em;
+  margin-left: 18em;
+}
+
+/* main */
+.boxes {
+  background-color: #eaf6d8;
+  color: black;
+  margin: 1.5em .5em .5em .5em;
+  padding: 1.5em .5em .5em .5em;
+  font-weight: bold;
+  line-height: 1.8em;
+  font-size: 115%;
+  border-radius: 1em;
+}
+.box {
+  background-color: white;
+  border-radius: 1em;
+  margin: 1em 1em 3em 1em;
+  padding: 1em;
+  position: relative;
+  filter: drop-shadow(.1em .1em .1em #aaa);
+}
+.box:last-child {
+  margin-bottom: 1em;
+}
+.box > .box1 {
+  display: inline-block;
+  position: relative;
+  background-color: #fe5e99;
+  color: white;
+  border-radius: 1em;
+  top: -2.3em;
+  left: -1em;
+  padding: 0 1em;
+}
+.box > .box1 > span:nth-child(2) {
+  display: inline-block;
+  text-align: right;
+  width: 8em;
+}
+.box > .box2 {
+  margin-top: -1em;
+  height: 1.1em;
+  font-size: 150%;
+}
+.box .spantime {
+  color: #fe5e99;
+}
+.box .spanarrow {
+  display: inline-block;
+  font-size: 90%;
+  padding: 0 .3em;
+}
+.box .spanduring {
+  display: inline-block;
+  font-size: 70%;
+  font-weight: normal;
+  padding: 0 0 0 1em;
+}
+.box .spanfee {
+  display: inline-block;
+  font-size: 80%;
+  font-weight: normal;
+  padding: 0 0 0 3em;
+}
+
+.box > .box2c {
+  width: 100%;
+  margin: 0 -1em -1em -1em;
+  padding: 0 1em 0 1em;
+  font-weight: normal;
+  font-size: 90%;
+  background-color: #efefef;
+  border-radius: 0 0 1em 1em;
+}
+
+/* footer */
+footer {
+  margin: 0;
+  background-color: #efefef;
+  padding: .5em;
+  font-size: 80%;
+}
+a {
+  color: gray !important;
+}
+</style>
+
+
+<script type="module">
+import { HapilineTimetable } from "https://code4fukui.github.io/hapiline-timetable/HapilineTimetable.js";
+import { HapilineFare } from "https://code4fukui.github.io/hapiline-timetable/HapilineFare.js";
+import { Time } from "https://js.sabae.cc/DateTime.js";
+import { removeHash } from "https://js.sabae.cc/removeHash.js";
+import { addComma } from "https://js.sabae.cc/addComma.js";
+import { DateTime } from "https://js.sabae.cc/DateTime.js";
+
+const base = "https://code4fukui.github.io/hapiline-timetable/";
+const tt = await HapilineTimetable.create(base);
+const fare = await HapilineFare.create(base);
+
+const showTime = (idbase, fromst, tost) => {
+  const base = document.getElementById(idbase)
+  base.innerHTML = "";
+
+  const dt = indatetime.value;
+  //const nowt = new DateTime(dt).time.quantizeSeconds();
+  const nowm = new DateTime(dt).time.quantizeMinutes().toMinutes();
+  const trs = tt.getNextTrains(fromst, tost, 3, nowm);
+  const nowt = new Time().quantizeSeconds();
+  for (let i = 0; i < 3; i++) {
+    //const c = document.getElementById(idbase + "n" + (i + 1));
+    const tr = trs[i];
+    if (!tr) {
+      break;
+    }
+    const fromt = new Time(tr[fromst + "_発"]);
+    const tot = new Time(tr[tost + "_着"]);
+    const dt = (tot.toMinutes() - fromt.toMinutes() + 24 * 60) % (24 * 60);
+    const rm = fromt.toSeconds() - nowt.toSeconds();
+    const fee = fare.getFare(fromst, tost);
+    //c.textContent = `${tr.ID} ${fromt}→${tot} ${dt}分 あと${Math.floor(rm / 60)}分${rm % 60}秒で出発`;
+    //c.innerHTML = `${fromt.toStringMin()}→${tot.toStringMin()}(${dt}分) ${Math.floor(rm / 60) + 1}分後 <span class=trid>${tr.ID}</span>`;
+    const div = document.createElement("div");
+    div.className = "box";
+    div.innerHTML = `<div class=box1><span>出発まで</span><span>${Math.floor(rm / 60)}分${rm % 60}秒</span></div>
+  <div class=box2>
+    <div class=box2a>
+      <span class=spantime>${fromt.toStringMin()}</span><span class=spanarrow>→</span><span class=spantime>${tot.toStringMin()}</span><span class=spanduring>(${dt}分)</span></div>
+    </div>
+    <div class=box2b>
+      <span class=spanfee>${fee}円</span>
+    </div>
+    <div class=box2c>${fromst}→${tost}</div>
+  </div>
+`;
+    base.appendChild(div);
+  }
+};
+const show = () => {
+  //spannow.textContent = `現在時刻 ${new Time().quantizeSeconds().toString()}`;
+  const from = selfrom.value;
+  const to = selto.value;
+  showTime("box1", from, to);
+  //showTime("box2", to, from);
+};
+
+const initdefault = ["鯖江", "福井"];
+
+const sts = tt.getStations();
+for (const sel of [selfrom, selto]) {
+  for (const st of sts) {
+    const opt = document.createElement("option");
+    opt.textContent = st;
+    sel.appendChild(opt);
+    sel.onchange = () => {
+      const from = selfrom.value;
+      const to = selto.value;
+      //from1.textContent = from;
+      //to1.textContent = to;
+      //from2.textContent = to;
+      //to2.textContent = from;
+      show();
+
+      const frominfo = tt.getStationInfo(from);
+      const toinfo = tt.getStationInfo(to);
+
+      const fromkana = frominfo.kana;
+      const tokana = toinfo.kana;
+      //from1ruby.textContent = fromkana;
+      //to1ruby.textContent = tokana;
+      //from2ruby.textContent = tokana;
+      //to2ruby.textContent = fromkana;
+
+      //from1.onclick = to2.onclick = () => open(frominfo.出典URL);
+      //from2.onclick = to1.onclick = () => open(toinfo.出典URL);
+
+
+      //const n = fare.getFare(from, to);
+      //spanfare.textContent = n ? addComma(n) + "円" : "";
+
+      if (from == initdefault[0] && to == initdefault[1]) {
+        removeHash();
+      } else {
+        location.hash = [from, to].map(i => encodeURIComponent(i)).join(",");
+      }
+    };
+  }
+}
+const init = location.hash.substring(1).split(",").map(i => decodeURIComponent(i));
+selfrom.value = init[0] || initdefault[0];
+selto.value = init[1] || initdefault[1];
+
+btnnow.onclick = () => {
+  indatetime.value = new DateTime().toStringMin();
+};
+btnnow.onclick();
+imgarrows.onclick = () => {
+  [selfrom.value, selto.value] = [selto.value, selfrom.value];
+  selfrom.onchange();
+};
+
+setInterval(show, 1000);
+show();
+
+//selfrom.onchange();
+</script>
+</body></html>
