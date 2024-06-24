@@ -1,5 +1,7 @@
 # らくライン rakuline
 
+![image](https://github.com/code4fukui/rakuline/assets/1715217/e456bfc8-f2cc-426b-b132-3635ce6c566a)
+
 - https://code4fukui.github.io/rakuline/
 
 ## dependencies
