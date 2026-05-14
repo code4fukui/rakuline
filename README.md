@@ -1,14 +1,22 @@
-# らくライン rakuline
+# らくライン (rakuline)
 
-![image](https://github.com/code4fukui/rakuline/assets/1715217/e456bfc8-f2cc-426b-b132-3635ce6c566a)
+> 日本語のREADMEはこちらです: [README.ja.md](README.ja.md)
 
-- https://code4fukui.github.io/rakuline/
+<img src="rakuline.svg" width="200" alt="rakuline logo">
 
-## dependencies
+A simple, real-time transportation planner for the Hapi-Line Fukui railway. It provides upcoming train schedules, journey times, and fares between any two stations.
 
-- [hapiline-timetable](https://github.com/code4fukui/hapiline-timetable)
+## Demo
 
-## design
+**[https://code4fukui.github.io/rakuline/](https://code4fukui.github.io/rakuline/)**
 
-- [design on Figma](https://www.figma.com/design/XPjnBeyDhm3H4OMmO2q9JD/%E4%BA%A4%E9%80%9A%E6%A1%88%E5%86%85?node-id=0-1) design by Site. Ataka Risa
-- [rakuline-design.pdf](rakuline-design.pdf) design by Site. Ataka Risa
+
+![Screenshot of the rakuline application](https://github.com/code4fukui/rakuline/assets/1715217/e456bfc8-f2cc-426b-b132-3635ce6c566a)
+
+
+## Features
+
+-   **Journey Planning**: Select departure and arrival stations to see the next available trains.
+-   **Real-Time Countdown**: Shows the exact time remaining until the next departure.
+-   **Trip Details**: Displays departure/arrival times, total journey duration, and the fare for each trip.
+-   **Flexible Time Selection**: Use the date and time picker to plan future trips, or click "現在
